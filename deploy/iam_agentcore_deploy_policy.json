@@ -1,0 +1,114 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "BedrockAgentCoreAPI",
+      "Effect": "Allow",
+      "Action": [
+        "bedrock-agentcore:*"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "AgentCoreDeployS3",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:ListBucket",
+        "s3:CreateBucket",
+        "s3:PutLifecycleConfiguration"
+      ],
+      "Resource": [
+        "arn:aws:s3:::bedrock-agentcore-*",
+        "arn:aws:s3:::bedrock-agentcore-*/*"
+      ]
+    },
+    {
+      "Sid": "AgentCoreDeployIAMRoles",
+      "Effect": "Allow",
+      "Action": [
+        "iam:CreateRole",
+        "iam:DeleteRole",
+        "iam:GetRole",
+        "iam:PassRole",
+        "iam:PutRolePolicy",
+        "iam:DeleteRolePolicy",
+        "iam:AttachRolePolicy",
+        "iam:DetachRolePolicy",
+        "iam:CreatePolicy",
+        "iam:GetPolicy",
+        "iam:ListRolePolicies",
+        "iam:ListAttachedRolePolicies"
+      ],
+      "Resource": [
+        "arn:aws:iam::*:role/*BedrockAgentCore*",
+        "arn:aws:iam::*:role/service-role/*BedrockAgentCore*",
+        "arn:aws:iam::*:policy/service-role/AmazonBedrockAgentCore*"
+      ]
+    },
+    {
+      "Sid": "CreateRuntimeIdentityServiceLinkedRole",
+      "Effect": "Allow",
+      "Action": "iam:CreateServiceLinkedRole",
+      "Resource": "arn:aws:iam::*:role/aws-service-role/runtime-identity.bedrock-agentcore.amazonaws.com/AWSServiceRoleForBedrockAgentCoreRuntimeIdentity",
+      "Condition": {
+        "StringEquals": {
+          "iam:AWSServiceName": "runtime-identity.bedrock-agentcore.amazonaws.com"
+        }
+      }
+    },
+    {
+      "Sid": "CreateNetworkServiceLinkedRole",
+      "Effect": "Allow",
+      "Action": "iam:CreateServiceLinkedRole",
+      "Resource": "arn:aws:iam::*:role/aws-service-role/network.bedrock-agentcore.amazonaws.com/AWSServiceRoleForBedrockAgentCoreNetwork",
+      "Condition": {
+        "StringEquals": {
+          "iam:AWSServiceName": "network.bedrock-agentcore.amazonaws.com"
+        }
+      }
+    },
+    {
+      "Sid": "CreateGatewayNetworkServiceLinkedRole",
+      "Effect": "Allow",
+      "Action": "iam:CreateServiceLinkedRole",
+      "Resource": "arn:aws:iam::*:role/aws-service-role/bedrock-agentcore.amazonaws.com/AWSServiceRoleForBedrockAgentCoreGatewayNetwork",
+      "Condition": {
+        "StringEquals": {
+          "iam:AWSServiceName": "bedrock-agentcore.amazonaws.com"
+        }
+      }
+    },
+    {
+      "Sid": "CreateIdentityNetworkServiceLinkedRole",
+      "Effect": "Allow",
+      "Action": "iam:CreateServiceLinkedRole",
+      "Resource": "arn:aws:iam::*:role/aws-service-role/identity-network.bedrock-agentcore.amazonaws.com/AWSServiceRoleForBedrockAgentCoreIdentity",
+      "Condition": {
+        "StringEquals": {
+          "iam:AWSServiceName": "identity-network.bedrock-agentcore.amazonaws.com"
+        }
+      }
+    },
+    {
+      "Sid": "CloudWatchLogsRead",
+      "Effect": "Allow",
+      "Action": [
+        "logs:GetLogEvents",
+        "logs:DescribeLogGroups",
+        "logs:DescribeLogStreams"
+      ],
+      "Resource": [
+        "arn:aws:logs:*:*:log-group:/aws/bedrock-agentcore/*",
+        "arn:aws:logs:*:*:log-group:/aws/codebuild/*"
+      ]
+    },
+    {
+      "Sid": "STSIdentity",
+      "Effect": "Allow",
+      "Action": "sts:GetCallerIdentity",
+      "Resource": "*"
+    }
+  ]
+}

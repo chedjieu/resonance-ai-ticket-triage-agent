@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ticket Approval | Monk Technologies</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Ticket Triage — Human Approval</h1>
+      <p class="subtitle">Submit a demo ticket, then approve the draft when it appears.</p>
+    </header>
+
+    <section class="toolbar">
+      <button type="button" id="btn-demo" class="btn-demo">Submit demo ticket (MFA loop)</button>
+      <span id="toolbar-status" class="toolbar-status"></span>
+    </section>
+
+    <section id="thread-status" class="thread-status" hidden>
+      <h2>Processing status</h2>
+      <ul id="thread-list"></ul>
+    </section>
+
+    <section>
+      <h2>Pending approvals</h2>
+      <div id="pending-list">
+        <p class="empty">No pending approvals yet.</p>
+      </div>
+    </section>
+
+    <template id="card-template">
+      <article class="card" data-thread-id="">
+        <h3 class="subject"></h3>
+        <div class="meta classification"></div>
+        <div class="meta severity"></div>
+        <ul class="findings"></ul>
+        <label>Draft response</label>
+        <textarea class="draft-body"></textarea>
+        <div class="actions">
+          <button type="button" class="btn-approve">Approve</button>
+          <button type="button" class="btn-edit">Save &amp; Approve as Edit</button>
+          <button type="button" class="btn-reject">Reject</button>
+        </div>
+        <div class="status"></div>
+      </article>
+    </template>
+
+    <script>
+      const listEl = document.getElementById("pending-list");
+      const template = document.getElementById("card-template");
+      const threadStatusEl = document.getElementById("thread-status");
+      const threadListEl = document.getElementById("thread-list");
+      const toolbarStatus = document.getElementById("toolbar-status");
+      const btnDemo = document.getElementById("btn-demo");
+
+      let pollTimer = null;
+
+      function escapeHtml(text) {
+        return String(text ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+      }
+
+      async function fetchJson(url, options) {
+        const res = await fetch(url, options);
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(text || res.statusText);
+        }
+        return res.json();
+      }
+
+      async function postAction(threadId, action, editedBody) {
+        return fetchJson(`/approve/${threadId}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action, edited_body: editedBody ?? null }),
+        });
+      }
+
+      function renderThreads(threads) {
+        if (!threads.length) {
+          threadStatusEl.hidden = true;
+          return;
+        }
+        threadStatusEl.hidden = false;
+        threadListEl.innerHTML = threads
+          .map((t) => {
+            const status = t.status || "unknown";
+            const err = t.error
+              ? `<div class="thread-error">${escapeHtml(t.error)}</div>`
+              : "";
+            return `<li><code>${escapeHtml(t.thread_id.slice(0, 8))}…</code> — <strong>${escapeHtml(status)}</strong>${err}</li>`;
+          })
+          .join("");
+      }
+
+      function renderPending(items) {
+        if (!items.length) {
+          listEl.innerHTML = '<p class="empty">No pending approvals yet.</p>';
+          return;
+        }
+
+        listEl.innerHTML = "";
+        for (const item of items) {
+          const p = item.payload || {};
+          const raw = p.raw || {};
+          const draft = p.draft || {};
+          const cls = p.classification || {};
+          const findings = p.findings || [];
+
+          const card = template.content.cloneNode(true).querySelector(".card");
+          card.dataset.threadId = item.thread_id;
+          card.querySelector(".subject").textContent =
+            raw.subject || draft.subject || "Untitled ticket";
+          card.querySelector(".classification").textContent =
+            `Category: ${cls.category ?? "unknown"} (confidence ${cls.confidence ?? "?"})`;
+          card.querySelector(".severity").textContent =
+            `Severity: ${p.severity ?? "?"}`;
+          const ul = card.querySelector(".findings");
+          if (findings.length) {
+            ul.innerHTML = findings
+              .map((f) => `<li>${escapeHtml(f.claim || JSON.stringify(f))}</li>`)
+              .join("");
+          } else {
+            ul.innerHTML = "<li><em>No findings</em></li>";
+          }
+          card.querySelector(".draft-body").value = draft.body || "";
+
+          card.querySelector(".btn-approve").addEventListener("click", async () => {
+            const status = card.querySelector(".status");
+            status.textContent = "Approving…";
+            try {
+              await postAction(item.thread_id, "approve");
+              card.remove();
+              refresh();
+            } catch (e) {
+              status.textContent = `Error: ${e.message}`;
+            }
+          });
+
+          card.querySelector(".btn-edit").addEventListener("click", async () => {
+            const status = card.querySelector(".status");
+            const body = card.querySelector(".draft-body").value;
+            status.textContent = "Saving edit…";
+            try {
+              await postAction(item.thread_id, "edit", body);
+              card.remove();
+              refresh();
+            } catch (e) {
+              status.textContent = `Error: ${e.message}`;
+            }
+          });
+
+          card.querySelector(".btn-reject").addEventListener("click", async () => {
+            const status = card.querySelector(".status");
+            status.textContent = "Rejecting…";
+            try {
+              await postAction(item.thread_id, "reject");
+              card.remove();
+              refresh();
+            } catch (e) {
+              status.textContent = `Error: ${e.message}`;
+            }
+          });
+
+          listEl.appendChild(card);
+        }
+      }
+
+      async function refresh() {
+        try {
+          const [pending, threads] = await Promise.all([
+            fetchJson("/pending"),
+            fetchJson("/threads"),
+          ]);
+          renderPending(pending);
+          renderThreads(threads);
+        } catch (e) {
+          listEl.innerHTML = `<p class="empty error">Failed to reach server: ${escapeHtml(e.message)}</p>`;
+        }
+      }
+
+      btnDemo.addEventListener("click", async () => {
+        btnDemo.disabled = true;
+        toolbarStatus.textContent = "Submitting demo ticket…";
+        try {
+          const res = await fetchJson("/ingest/demo", { method: "POST" });
+          toolbarStatus.textContent = `Started thread ${res.thread_id.slice(0, 8)}… (processing)`;
+          await refresh();
+        } catch (e) {
+          toolbarStatus.textContent = `Error: ${e.message}`;
+        } finally {
+          btnDemo.disabled = false;
+        }
+      });
+
+      refresh();
+      pollTimer = setInterval(refresh, 5000);
+    </script>
+  </body>
+</html>

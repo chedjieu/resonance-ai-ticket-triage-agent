@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Git Bash wrapper — delegates to zip_wrapper.py
+set -euo pipefail
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+PYTHON="$ROOT/.venv/Scripts/python.exe"
+[[ -x "$PYTHON" ]] || PYTHON="$ROOT/.venv/bin/python"
+[[ -x "$PYTHON" ]] || PYTHON="python"
+exec "$PYTHON" "$ROOT/deploy/bin/zip_wrapper.py" "$@"

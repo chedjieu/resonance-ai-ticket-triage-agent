@@ -1,0 +1,15 @@
+{
+  "auth-service": {
+    "errors_per_min": {"current": 14, "avg": 1.8, "p95": 9, "trend": "up"},
+    "mfa_failures_per_min": {"current": 11, "avg": 0.4, "p95": 3, "trend": "up"},
+    "login_latency_ms": {"current": 420, "avg": 180, "p95": 350, "trend": "flat"}
+  },
+  "billing-service": {
+    "errors_per_min": {"current": 0.2, "avg": 0.1, "p95": 0.5, "trend": "flat"},
+    "refund_queue_depth": {"current": 3, "avg": 1.2, "p95": 4, "trend": "up"}
+  },
+  "reports-service": {
+    "errors_per_min": {"current": 2.1, "avg": 0.3, "p95": 1.2, "trend": "up"},
+    "export_timeouts_per_hour": {"current": 6, "avg": 0.5, "p95": 2, "trend": "up"}
+  }
+}

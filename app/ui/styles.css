@@ -1,0 +1,72 @@
+* { box-sizing: border-box; }
+body {
+  font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+  margin: 0;
+  padding: 1.5rem;
+  background: #f4f6f8;
+  color: #1a1a1a;
+}
+header { margin-bottom: 1.5rem; }
+h1 { margin: 0 0 0.25rem; font-size: 1.5rem; }
+.subtitle { color: #555; margin: 0; }
+.card {
+  background: #fff;
+  border: 1px solid #dde3ea;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+.card h2 { margin: 0 0 0.75rem; font-size: 1.1rem; }
+.meta { color: #444; font-size: 0.9rem; margin-bottom: 0.5rem; }
+.findings { margin: 0.5rem 0 1rem 1.25rem; }
+.findings li { margin-bottom: 0.35rem; }
+textarea {
+  width: 100%;
+  min-height: 140px;
+  padding: 0.75rem;
+  border: 1px solid #ccd4dc;
+  border-radius: 6px;
+  font: inherit;
+  resize: vertical;
+}
+.actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.75rem; }
+button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font: inherit;
+}
+.btn-approve { background: #1a7f37; color: #fff; }
+.btn-edit { background: #0969da; color: #fff; }
+.btn-reject { background: #cf222e; color: #fff; }
+.empty { color: #666; font-style: italic; }
+.error { color: #cf222e; font-style: normal; }
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+.btn-demo { background: #6e40c9; color: #fff; }
+.toolbar-status { color: #444; font-size: 0.9rem; }
+.thread-status {
+  background: #fff;
+  border: 1px solid #dde3ea;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+.thread-status h2 { margin: 0 0 0.75rem; font-size: 1rem; }
+.thread-status ul { margin: 0; padding-left: 1.25rem; }
+.thread-status li { margin-bottom: 0.5rem; }
+.thread-error {
+  color: #cf222e;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  word-break: break-word;
+}
+section > h2 { font-size: 1.1rem; margin: 0 0 0.75rem; }
+.status { font-size: 0.85rem; color: #666; margin-top: 0.5rem; }
