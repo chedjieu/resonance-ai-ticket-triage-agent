@@ -9,7 +9,10 @@ def supervisor_node(state: TicketState) -> dict:
     """Decide the next node based on current ticket progress."""
     nxt: Route = "END"
 
-    if state["classification"] is None:
+    # Guardrail / operator rejection ends the run (no further workers).
+    if state["approval"] == "rejected":
+        nxt = "END"
+    elif state["classification"] is None:
         nxt = "triager"
     elif state["findings"] == []:
         nxt = "investigator"

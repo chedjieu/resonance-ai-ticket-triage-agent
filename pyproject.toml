@@ -10,10 +10,13 @@ dependencies = [
     "langchain-core>=0.3,<0.4",
     "langchain-aws>=0.2.10",
     "langchain-google-vertexai>=2.0.10",
+    "google-cloud-aiplatform[agent_engines,langchain]>=1.74.0",
+    "boto3>=1.35.40",
     "numpy>=1.26.4,<2",
     "langgraph>=0.2.50,<0.3",
     "langgraph-checkpoint-sqlite>=2.0.1",
     "langgraph-checkpoint-postgres>=2.0.7",
+    "langsmith>=0.1.140",
     "bedrock-agentcore>=0.1.0",
     "psycopg[binary]>=3.2.3",
     "pgvector>=0.3.6",
@@ -21,6 +24,8 @@ dependencies = [
     "python-dotenv>=1.0.1",
     "pyyaml>=6.0.2",
     "uvicorn[standard]>=0.32.0",
+    "streamlit>=1.40.0",
+    "pandas>=2.2.0",
 ]
 
 [dependency-groups]

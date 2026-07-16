@@ -11,6 +11,7 @@ import yaml
 from langchain_core.messages import HumanMessage, SystemMessage
 from pydantic import BaseModel
 
+from app.guardrails import check_ticket_guardrail, is_guardrail_exception
 from app.llm import get_chat_model, invoke_with_throttle_fallback
 from app.state import Severity, TicketState
 
@@ -45,7 +46,18 @@ def triager_node(state: TicketState) -> dict:
     domain = state["domain"]
     taxonomy = _load_taxonomy(domain)
     valid = _valid_categories(taxonomy)
-    ticket = json.dumps(state["raw"], ensure_ascii=False)
+    raw = state["raw"] or {}
+    ticket_text = f"{raw.get('subject', '')}\n{raw.get('body', '')}"
+    refusal = check_ticket_guardrail(ticket_text)
+    if refusal:
+        return {
+            "classification": None,
+            "severity": None,
+            "approval": "rejected",
+            "step_log": state["step_log"] + [f"GUARDRAIL_REFUSAL: {refusal}"],
+        }
+
+    ticket = json.dumps(raw, ensure_ascii=False)
 
     # TODO: episodic memory examples
     system_prompt = (
@@ -64,7 +76,18 @@ def triager_node(state: TicketState) -> dict:
             ]
         )
 
-    out = invoke_with_throttle_fallback(run_triage)
+    try:
+        out = invoke_with_throttle_fallback(run_triage)
+    except Exception as exc:
+        if is_guardrail_exception(exc):
+            return {
+                "classification": None,
+                "severity": None,
+                "approval": "rejected",
+                "step_log": state["step_log"]
+                + [f"GUARDRAIL_REFUSAL: Bedrock/Vertex guardrail intervened ({exc})"],
+            }
+        raise
 
     category = out.category if out.category in valid else "unknown"
     severity: Severity = out.severity if category != "unknown" else "P3"
