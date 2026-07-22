@@ -25,7 +25,7 @@ from app.llm import get_chat_model
 from evals._common import EVALS_DIR, eval_data, load_jsonl, should_upload
 
 GOLDEN_PATH = EVALS_DIR / "golden.jsonl"
-DATASET_NAME = "monk-ticket-e2e-golden"
+DATASET_NAME = "rtta-ticket-e2e-golden"
 EXPERIMENT = "e2e-eval"
 JUDGE_PROMPT = (
     "On a scale of 1-5, is this support reply reasonable for the ticket?\n"
@@ -114,7 +114,7 @@ def _fake_response_score(ticket: dict, body: str) -> tuple[float, str]:
 
 
 def response_quality(ticket: dict, draft_body: str) -> tuple[float, str]:
-    if is_fake_chat_model(os.getenv("MONK_MODEL", "")):
+    if is_fake_chat_model(os.getenv("RTTA_MODEL", "")):
         return _fake_response_score(ticket, draft_body)
     prompt = JUDGE_PROMPT.format(
         ticket=json.dumps(ticket, ensure_ascii=False),

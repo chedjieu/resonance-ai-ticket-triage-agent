@@ -14,7 +14,7 @@ if str(_ROOT) not in sys.path:
     sys.path.insert(0, str(_ROOT))
 
 # Capture before app/__init__ reloads .env with override=True.
-_PRE_IMPORT_MODEL = os.environ.get("MONK_MODEL", "").strip()
+_PRE_IMPORT_MODEL = os.environ.get("RTTA_MODEL", "").strip()
 _EVAL_MODEL = os.environ.get("SECURITY_EVAL_MODEL", "").strip()
 
 importlib.import_module("app")
@@ -28,15 +28,15 @@ DOMAIN = "support"
 
 
 def _apply_eval_model() -> None:
-    """Honor SECURITY_EVAL_MODEL or a pre-import MONK_MODEL after dotenv override."""
+    """Honor SECURITY_EVAL_MODEL or a pre-import RTTA_MODEL after dotenv override."""
     chosen = _EVAL_MODEL or (
         _PRE_IMPORT_MODEL if _PRE_IMPORT_MODEL.lower() in ("fake", "stub", "offline") else ""
     )
     if not chosen:
         return
-    os.environ["MONK_MODEL"] = chosen
+    os.environ["RTTA_MODEL"] = chosen
     get_chat_model.cache_clear()
-    print(f"(eval model) MONK_MODEL={chosen}")
+    print(f"(eval model) RTTA_MODEL={chosen}")
 
 
 def load_attacks() -> list[dict]:

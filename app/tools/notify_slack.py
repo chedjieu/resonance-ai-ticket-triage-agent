@@ -89,7 +89,7 @@ def _fallback_text(blocks: list[dict]) -> str:
             text = block.get("text") or {}
             if isinstance(text, dict) and text.get("text"):
                 parts.append(str(text["text"]))
-    return "\n".join(parts) or "Monk ticket triage notification"
+    return "\n".join(parts) or "RTTA ticket triage notification"
 
 
 def p1_incident_blocks(state: dict) -> list[dict]:

@@ -15,7 +15,7 @@ from app.llm import get_embeddings
 logger = logging.getLogger(__name__)
 
 DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data"
-DEFAULT_DSN = "postgresql://postgres:postgres@localhost:5433/monk"
+DEFAULT_DSN = "postgresql://postgres:postgres@localhost:5433/resonance"
 TABLE = "past_resolutions"
 
 

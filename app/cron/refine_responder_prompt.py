@@ -20,7 +20,7 @@ _ROOT = Path(__file__).resolve().parent.parent.parent
 if str(_ROOT) not in sys.path:
     sys.path.insert(0, str(_ROOT))
 
-_PRE_IMPORT_MODEL = os.environ.get("MONK_MODEL", "").strip()
+_PRE_IMPORT_MODEL = os.environ.get("RTTA_MODEL", "").strip()
 importlib.import_module("app")
 
 from langchain_core.messages import HumanMessage, SystemMessage
@@ -31,7 +31,7 @@ from app.memory.procedural import get_responder_prompt
 from app._fake_llm import is_fake_chat_model
 
 if _PRE_IMPORT_MODEL.lower() in ("fake", "stub", "offline"):
-    os.environ["MONK_MODEL"] = _PRE_IMPORT_MODEL
+    os.environ["RTTA_MODEL"] = _PRE_IMPORT_MODEL
     get_chat_model.cache_clear()
 
 REFINE_SYSTEM = (
@@ -144,7 +144,7 @@ def propose_prompt(domain: str, outcomes: list[dict], current: str) -> dict:
         }
 
     # Offline fake model has no useful refine behaviour — use heuristics.
-    if is_fake_chat_model(os.getenv("MONK_MODEL", "")):
+    if is_fake_chat_model(os.getenv("RTTA_MODEL", "")):
         return _heuristic_proposal(current, outcomes)
 
     try:

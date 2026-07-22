@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Deploy monk-ticket-triage to AWS Bedrock AgentCore.
+# Deploy RTTA-AI-Multi-Agent-Ticket-Triage to AWS Bedrock AgentCore.
 # Run from anywhere; the script cd's into the project root.
 
 set -euo pipefail
@@ -21,21 +21,21 @@ if ! command -v zip >/dev/null 2>&1 && ! uv run python -c "import shutil; raise 
     exit 1
 fi
 
-# Load .env (local first, then shared starter-repo/.env)
+# Load .env (local first, then shared RAIRA-AI-Research-Assistant/.env)
 if [[ -f "$ROOT/.env" ]]; then
     set -a
     # shellcheck disable=SC1091
     source "$ROOT/.env"
     set +a
-elif [[ -f "$ROOT/../starter-repo/.env" ]]; then
+elif [[ -f "$ROOT/../RAIRA-AI-Research-Assistant/.env" ]]; then
     set -a
     # shellcheck disable=SC1091
-    source "$ROOT/../starter-repo/.env"
+    source "$ROOT/../RAIRA-AI-Research-Assistant/.env"
     set +a
 fi
 
 # Agent names must be letters, numbers, underscores only (no hyphens).
-NAME="${AGENT_NAME:-monk_ticket_triage}"
+NAME="${AGENT_NAME:-rtta_ticket_triage}"
 # Root entrypoint avoids Windows backslash paths that break Linux ARM64 runtime.
 ENTRYPOINT="${ENTRYPOINT:-agentcore_entrypoint.py}"
 REGION="${AWS_REGION:-us-east-1}"
@@ -125,11 +125,11 @@ deploy_args=(--agent "$NAME")
 if [[ -n "${POSTGRES_DSN:-}" ]]; then
     deploy_args+=(--env "POSTGRES_DSN=$POSTGRES_DSN")
 fi
-if [[ -n "${MONK_MODEL:-}" ]]; then
-    deploy_args+=(--env "MONK_MODEL=$MONK_MODEL")
+if [[ -n "${RTTA_MODEL:-}" ]]; then
+    deploy_args+=(--env "RTTA_MODEL=$RTTA_MODEL")
 fi
-if [[ -n "${MONK_EMBEDDINGS:-}" ]]; then
-    deploy_args+=(--env "MONK_EMBEDDINGS=$MONK_EMBEDDINGS")
+if [[ -n "${RTTA_EMBEDDINGS:-}" ]]; then
+    deploy_args+=(--env "RTTA_EMBEDDINGS=$RTTA_EMBEDDINGS")
 fi
 if [[ -n "${AWS_REGION:-}" ]]; then
     deploy_args+=(--env "AWS_REGION=$AWS_REGION")

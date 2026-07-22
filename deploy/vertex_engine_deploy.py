@@ -1,4 +1,4 @@
-"""Deploy monk-ticket-triage to Vertex AI Agent Engine."""
+"""Deploy RTTA-AI-Multi-Agent-Ticket-Triage to Vertex AI Agent Engine."""
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ def main() -> None:
     try:
         from dotenv import load_dotenv
 
-        for _env in (_ROOT / ".env", _ROOT.parent / "starter-repo" / ".env"):
+        for _env in (_ROOT / ".env", _ROOT.parent / "RAIRA-AI-Research-Assistant" / ".env"):
             if _env.exists():
                 load_dotenv(_env, override=False)
                 break
@@ -49,7 +49,7 @@ def main() -> None:
             "pydantic>=2",
             "pyyaml",
         ],
-        display_name="monk-ticket-triage",
+        display_name="RTTA-AI-Multi-Agent-Ticket-Triage",
     )
     print("Deployed:", deployed.resource_name)
 

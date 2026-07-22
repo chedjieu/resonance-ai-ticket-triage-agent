@@ -23,7 +23,7 @@ from app.llm import get_chat_model
 from evals._common import EVALS_DIR, empty_ticket_state, eval_data, load_jsonl, should_upload
 
 GOLDEN_PATH = EVALS_DIR / "responder_golden.jsonl"
-DATASET_NAME = "monk-ticket-responder-golden"
+DATASET_NAME = "rtta-ticket-responder-golden"
 EXPERIMENT = "responder-eval"
 QUALITY_PASS = 3.0
 JUDGE_PROMPT = (
@@ -83,7 +83,7 @@ def _fake_quality(body: str, action: str, expected: str) -> tuple[float, str]:
 
 
 def quality_score(inputs: dict, outputs: dict) -> tuple[float, str]:
-    if is_fake_chat_model(os.getenv("MONK_MODEL", "")):
+    if is_fake_chat_model(os.getenv("RTTA_MODEL", "")):
         return _fake_quality(
             outputs.get("body") or "",
             outputs.get("recommended_action") or "",

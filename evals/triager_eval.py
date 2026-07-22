@@ -19,7 +19,7 @@ from app.agents.triager import triager_node
 from evals._common import EVALS_DIR, empty_ticket_state, eval_data, load_jsonl, should_upload
 
 GOLDEN_PATH = EVALS_DIR / "golden.jsonl"
-DATASET_NAME = "monk-ticket-triager-golden"
+DATASET_NAME = "rtta-ticket-triager-golden"
 EXPERIMENT = "triager-eval"
 
 

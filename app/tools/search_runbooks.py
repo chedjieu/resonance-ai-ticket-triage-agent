@@ -177,7 +177,7 @@ def _search_runbooks_bedrock_kb(domain: str, query: str, k: int) -> list[dict]:
 def search_runbooks(query: str, k: int = 3) -> list[dict]:
     """Search domain runbooks for remediation guidance relevant to the query."""
     domain = get_domain()
-    mode = os.getenv("MONK_RUNBOOKS", "auto").strip().lower()
+    mode = os.getenv("RTTA_RUNBOOKS", "auto").strip().lower()
 
     # Explicit offline mode, or auto with no KB configured.
     if mode == "file" or (mode == "auto" and not _kb_id_for_domain(domain)):
@@ -195,6 +195,6 @@ def search_runbooks(query: str, k: int = 3) -> list[dict]:
             logger.warning("Bedrock Knowledge Base retrieve failed (%s) — using file fallback", exc)
             return _search_runbooks_from_files(domain, query, k)
 
-    # Unknown MONK_RUNBOOKS value — keep previous file behaviour.
-    logger.warning("Unknown MONK_RUNBOOKS=%r — using file fallback", mode)
+    # Unknown RTTA_RUNBOOKS value — keep previous file behaviour.
+    logger.warning("Unknown RTTA_RUNBOOKS=%r — using file fallback", mode)
     return _search_runbooks_from_files(domain, query, k)

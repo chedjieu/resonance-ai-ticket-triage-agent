@@ -31,7 +31,7 @@ def check_ticket_guardrail(text: str) -> str | None:
     for pat in HARD_BLOCK_PATTERNS:
         if pat in low:
             return (
-                "Sorry — this request was blocked by the Monk ticket guardrail "
+                "Sorry — this request was blocked by the RTTA ticket guardrail "
                 f"(matched: {pat!r}). We cannot process prompt-injection or "
                 "credential-exfiltration attempts as support tickets."
             )

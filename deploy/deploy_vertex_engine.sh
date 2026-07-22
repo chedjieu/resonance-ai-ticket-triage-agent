@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Deploy monk-ticket-triage to GCP Vertex AI Agent Engine.
+# Deploy RTTA-AI-Multi-Agent-Ticket-Triage to GCP Vertex AI Agent Engine.
 # Requires: GCP_PROJECT, GCP_BUCKET (and optionally GCP_LOCATION).
 # Saves the resource name to .env.deployed
 
@@ -10,16 +10,16 @@ cd "$ROOT"
 
 bold() { printf "\033[1m%s\033[0m\n" "$*"; }
 
-# Load .env (local first, then shared starter-repo/.env)
+# Load .env (local first, then shared RAIRA-AI-Research-Assistant/.env)
 if [[ -f "$ROOT/.env" ]]; then
     set -a
     # shellcheck disable=SC1091
     source "$ROOT/.env"
     set +a
-elif [[ -f "$ROOT/../starter-repo/.env" ]]; then
+elif [[ -f "$ROOT/../RAIRA-AI-Research-Assistant/.env" ]]; then
     set -a
     # shellcheck disable=SC1091
-    source "$ROOT/../starter-repo/.env"
+    source "$ROOT/../RAIRA-AI-Research-Assistant/.env"
     set +a
 fi
 
@@ -27,7 +27,7 @@ fi
 : "${GCP_BUCKET:?set GCP_BUCKET}"
 GCP_LOCATION="${GCP_LOCATION:-us-central1}"
 
-bold "Monk Technologies - deploy to Vertex AI Agent Engine"
+bold "Resonance Technologies - deploy to Vertex AI Agent Engine"
 echo "  project=${GCP_PROJECT}"
 echo "  location=${GCP_LOCATION}"
 echo "  bucket=${GCP_BUCKET}"

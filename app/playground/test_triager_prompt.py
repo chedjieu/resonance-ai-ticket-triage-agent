@@ -2,10 +2,10 @@
 """Print the triage system prompt and run structured output against the sample ticket.
 
 Run:
-    cd monk-ticket-triage
+    cd RTTA-AI-Multi-Agent-Ticket-Triage
     uv run python -m app.playground.test_triager_prompt
 
-Uses MONK_MODEL from starter-repo/.env (Bedrock by default).
+Uses RTTA_MODEL from RAIRA-AI-Research-Assistant/.env (Bedrock by default).
 """
 
 from __future__ import annotations

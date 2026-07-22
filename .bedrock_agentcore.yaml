@@ -1,15 +1,15 @@
-default_agent: monk_ticket_triage
+default_agent: rtta_ticket_triage
 agents:
-  monk_ticket_triage:
-    name: monk_ticket_triage
+  rtta_ticket_triage:
+    name: rtta_ticket_triage
     language: python
     node_version: '20'
-    entrypoint: C:/Users/Desire/projects(ml-ai)/0.ide_vs-code_&_cursor/3.MT_AgenticAI/starter-repo-main/monk-ticket-triage/agentcore_entrypoint.py
+    entrypoint: C:/Users/Desire/projects(ml-ai)/0.ide_vs-code_&_cursor/3.MT_AgenticAI/starter-repo-main/RTTA-AI-Multi-Agent-Ticket-Triage/agentcore_entrypoint.py
     deployment_type: direct_code_deploy
     runtime_type: PYTHON_3_11
     platform: linux/arm64
     container_runtime: null
-    source_path: C:\Users\Desire\projects(ml-ai)\0.ide_vs-code_&_cursor\3.MT_AgenticAI\starter-repo-main\monk-ticket-triage
+    source_path: C:\Users\Desire\projects(ml-ai)\0.ide_vs-code_&_cursor\3.MT_AgenticAI\starter-repo-main\RTTA-AI-Multi-Agent-Ticket-Triage
     aws:
       execution_role: arn:aws:iam::338449997424:role/AmazonBedrockAgentCoreSDKRuntime-us-east-1-ef6ee5cd2c
       execution_role_auto_create: false
@@ -30,8 +30,8 @@ agents:
         idle_runtime_session_timeout: 600
         max_lifetime: null
     bedrock_agentcore:
-      agent_id: monk_ticket_triage-AFPcuY2boO
-      agent_arn: arn:aws:bedrock-agentcore:us-east-1:338449997424:runtime/monk_ticket_triage-AFPcuY2boO
+      agent_id: rtta_ticket_triage-AFPcuY2boO
+      agent_arn: arn:aws:bedrock-agentcore:us-east-1:338449997424:runtime/rtta_ticket_triage-AFPcuY2boO
       agent_session_id: null
     codebuild:
       project_name: null

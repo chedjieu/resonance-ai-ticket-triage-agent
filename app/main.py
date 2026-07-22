@@ -85,7 +85,7 @@ def _resume(thread_id: str, payload: dict) -> None:
         logger.exception("Resume failed for %s", thread_id)
 
 
-app = FastAPI(title="Monk Ticket Triage", lifespan=lifespan)
+app = FastAPI(title="Resonance Ticket Triage", lifespan=lifespan)
 app.mount("/static", StaticFiles(directory=UI_DIR), name="static")
 
 
@@ -158,9 +158,9 @@ def main() -> None:
 
     host = os.getenv("HOST", "127.0.0.1")
     port = int(os.getenv("PORT", "8002"))
-    model = os.getenv("MONK_MODEL", DEFAULT_MODEL)
+    model = os.getenv("RTTA_MODEL", DEFAULT_MODEL)
     mode = "offline fake" if is_fake_chat_model(model) else "real cloud"
-    print(f"\n  Monk Ticket Triage — Approval UI")
+    print(f"\n  Resonance Ticket Triage — Approval UI")
     print(f"  Model: {model} ({mode})")
     print(f"  Open: http://{host}:{port}\n")
     uvicorn.run(app, host=host, port=port)

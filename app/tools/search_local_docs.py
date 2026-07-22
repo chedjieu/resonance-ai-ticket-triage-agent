@@ -10,7 +10,7 @@ from langchain_core.tools import tool
 
 from app.llm import get_embeddings
 
-DEFAULT_DSN = "postgresql://postgres:postgres@localhost:5433/monk"
+DEFAULT_DSN = "postgresql://postgres:postgres@localhost:5433/resonance"
 
 
 def _sanitize_table(table: str) -> str:

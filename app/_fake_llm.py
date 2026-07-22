@@ -1,10 +1,10 @@
 """Deterministic offline stand-in for any real chat model + embeddings.
 
-When `MONK_MODEL=fake` (and/or `MONK_EMBEDDINGS=fake`), the project routes
+When `RTTA_MODEL=fake` (and/or `RTTA_EMBEDDINGS=fake`), the project routes
 through this module instead of Bedrock/Vertex. The point is to let the entire
 graph - planner / researcher / writer, plus tools, guardrails, evals and the
 HTMX UI - run end-to-end with zero cloud credentials, so we can dry-run the
-bootcamp offline. Real cloud models go through the normal `init_chat_model`
+lab offline. Real cloud models go through the normal `init_chat_model`
 path in `app/llm.py`.
 
 The fake model recognises a small number of "shapes" from the prompts in this
@@ -324,14 +324,14 @@ def _structured_responder_output(schema: type, messages: list[BaseMessage]) -> A
         "information collected by our team. Based on what I can see, here is what I recommend "
         "next.\n\n"
         "If this is time-sensitive please reply to this thread and our on-call engineer will "
-        "follow up.\n\nBest regards,\nMonk Support"
+        "follow up.\n\nBest regards,\nRTTA Support"
     )
     if "mfa" in body_text.lower() or "login" in body_text.lower():
         body = (
             "Hello,\n\nWe have looked at the authentication logs for your account and can see "
             "the MFA loop you reported. Please close and reopen your authenticator app to "
             "resync the time, then try logging in again from a fresh browser window. If the "
-            "issue persists, we can reset your MFA device.\n\nThanks,\nMonk Support"
+            "issue persists, we can reset your MFA device.\n\nThanks,\nRTTA Support"
         )
     if sender:
         body = body.replace("Hello,", f"Hello {sender.split('@')[0]},", 1)
@@ -688,7 +688,7 @@ def _generic_text(messages: list[BaseMessage]) -> str:
 # ---------- the model + the embeddings -----------------------------------------
 
 
-class FakeMonkChatModel(BaseChatModel):
+class FakeRTTAChatModel(BaseChatModel):
     """A deterministic chat model that pretends to be a real LLM.
 
     Stays inside the langchain `BaseChatModel` contract so `init_chat_model`
@@ -705,10 +705,10 @@ class FakeMonkChatModel(BaseChatModel):
 
     @property
     def _llm_type(self) -> str:
-        return "fake-monk"
+        return "fake-rtta"
 
-    def bind_tools(self, tools: list[Any], **kwargs: Any) -> FakeMonkChatModel:
-        new = FakeMonkChatModel(model_name=self.model_name)
+    def bind_tools(self, tools: list[Any], **kwargs: Any) -> FakeRTTAChatModel:
+        new = FakeRTTAChatModel(model_name=self.model_name)
         object.__setattr__(new, "_bound_tools", list(tools))
         return new
 
@@ -753,7 +753,7 @@ class FakeMonkChatModel(BaseChatModel):
         return self._generate(messages, stop=stop, **kwargs)
 
 
-class FakeMonkEmbeddings(Embeddings):
+class FakeRTTAEmbeddings(Embeddings):
     """Deterministic hashed embeddings.
 
     Bedrock Titan v2 is 1024-dim; we match that so the existing pgvector schema
@@ -790,22 +790,22 @@ class FakeMonkEmbeddings(Embeddings):
 def is_fake_chat_model(name: str | None) -> bool:
     if not name:
         return True
-    return name.strip().lower() in {"fake", "fake-monk", "stub", "monk:fake"}
+    return name.strip().lower() in {"fake", "fake-rtta", "stub", "rtta:fake"}
 
 
 def is_fake_embeddings(name: str | None) -> bool:
     if not name:
         return False
-    return name.strip().lower() in {"fake", "fake-monk", "stub", "monk:fake"}
+    return name.strip().lower() in {"fake", "fake-rtta", "stub", "rtta:fake"}
 
 
-def fake_chat_model(**_kwargs: Any) -> FakeMonkChatModel:
-    return FakeMonkChatModel()
+def fake_chat_model(**_kwargs: Any) -> FakeRTTAChatModel:
+    return FakeRTTAChatModel()
 
 
-def fake_embeddings(**_kwargs: Any) -> FakeMonkEmbeddings:
-    return FakeMonkEmbeddings()
+def fake_embeddings(**_kwargs: Any) -> FakeRTTAEmbeddings:
+    return FakeRTTAEmbeddings()
 
 
 def _force_fake_via_env() -> bool:
-    return os.getenv("MONK_FORCE_FAKE", "").strip().lower() in {"1", "true", "yes"}
+    return os.getenv("RTTA_FORCE_FAKE", "").strip().lower() in {"1", "true", "yes"}

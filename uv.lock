@@ -1405,7 +1405,7 @@ wheels = [
 ]
 
 [[package]]
-name = "monk-ticket-triage"
+name = "RTTA-AI-Multi-Agent-Ticket-Triage"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [

@@ -26,7 +26,7 @@ awscrt==0.32.2
 bedrock-agentcore==1.18.0
     # via
     #   bedrock-agentcore-starter-toolkit
-    #   monk-ticket-triage
+    #   RTTA-AI-Multi-Agent-Ticket-Triage
 bedrock-agentcore-starter-toolkit==0.3.10
 boto3==1.43.40
     # via
@@ -59,7 +59,7 @@ distro==1.9.0
 docstring-parser==0.18.0
     # via bedrock-agentcore-starter-toolkit
 fastapi==0.139.0
-    # via monk-ticket-triage
+    # via RTTA-AI-Multi-Agent-Ticket-Triage
 greenlet==3.5.3 ; platform_machine == 'AMD64' or platform_machine == 'WIN32' or platform_machine == 'aarch64' or platform_machine == 'amd64' or platform_machine == 'ppc64le' or platform_machine == 'win32' or platform_machine == 'x86_64'
     # via sqlalchemy
 h11==0.16.0
@@ -101,9 +101,9 @@ jsonschema-specifications==2025.9.1
     #   jsonschema
     #   openapi-schema-validator
 langchain==0.3.30
-    # via monk-ticket-triage
+    # via RTTA-AI-Multi-Agent-Ticket-Triage
 langchain-aws==0.2.35
-    # via monk-ticket-triage
+    # via RTTA-AI-Multi-Agent-Ticket-Triage
 langchain-core==0.3.86
     # via
     #   langchain
@@ -111,20 +111,20 @@ langchain-core==0.3.86
     #   langchain-text-splitters
     #   langgraph
     #   langgraph-checkpoint
-    #   monk-ticket-triage
+    #   RTTA-AI-Multi-Agent-Ticket-Triage
 langchain-text-splitters==0.3.11
     # via langchain
 langgraph==0.2.76
-    # via monk-ticket-triage
+    # via RTTA-AI-Multi-Agent-Ticket-Triage
 langgraph-checkpoint==2.1.2
     # via
     #   langgraph
     #   langgraph-checkpoint-postgres
     #   langgraph-checkpoint-sqlite
 langgraph-checkpoint-postgres==3.0.5
-    # via monk-ticket-triage
+    # via RTTA-AI-Multi-Agent-Ticket-Triage
 langgraph-checkpoint-sqlite==2.0.11
-    # via monk-ticket-triage
+    # via RTTA-AI-Multi-Agent-Ticket-Triage
 langgraph-sdk==0.1.74
     # via langgraph
 langsmith==0.9.7
@@ -142,7 +142,7 @@ mdurl==0.1.2
 numpy==1.26.4
     # via
     #   langchain-aws
-    #   monk-ticket-triage
+    #   RTTA-AI-Multi-Agent-Ticket-Triage
 openapi-schema-validator==0.9.0
     # via openapi-spec-validator
 openapi-spec-validator==0.9.0
@@ -162,7 +162,7 @@ packaging==25.0
 pathable==0.6.0
     # via jsonschema-path
 pgvector==0.5.0
-    # via monk-ticket-triage
+    # via RTTA-AI-Multi-Agent-Ticket-Triage
 prance==25.4.8.0
     # via bedrock-agentcore-starter-toolkit
 prompt-toolkit==3.0.52
@@ -172,7 +172,7 @@ prompt-toolkit==3.0.52
 psycopg==3.3.4
     # via
     #   langgraph-checkpoint-postgres
-    #   monk-ticket-triage
+    #   RTTA-AI-Multi-Agent-Ticket-Triage
 psycopg-binary==3.3.4 ; implementation_name != 'pypy'
     # via psycopg
 psycopg-pool==3.3.1
@@ -190,7 +190,7 @@ pydantic==2.13.4
     #   langchain-aws
     #   langchain-core
     #   langsmith
-    #   monk-ticket-triage
+    #   RTTA-AI-Multi-Agent-Ticket-Triage
     #   openapi-schema-validator
     #   openapi-spec-validator
     #   pydantic-settings
@@ -206,7 +206,7 @@ python-dateutil==2.9.0.post0
     # via botocore
 python-dotenv==1.2.2
     # via
-    #   monk-ticket-triage
+    #   RTTA-AI-Multi-Agent-Ticket-Triage
     #   pydantic-settings
     #   uvicorn
 pyyaml==6.0.3
@@ -215,7 +215,7 @@ pyyaml==6.0.3
     #   jsonschema-path
     #   langchain
     #   langchain-core
-    #   monk-ticket-triage
+    #   RTTA-AI-Multi-Agent-Ticket-Triage
     #   uvicorn
 questionary==2.1.1
     # via bedrock-agentcore-starter-toolkit
@@ -311,7 +311,7 @@ uvicorn==0.51.0
     # via
     #   bedrock-agentcore
     #   bedrock-agentcore-starter-toolkit
-    #   monk-ticket-triage
+    #   RTTA-AI-Multi-Agent-Ticket-Triage
 uvloop==0.22.1 ; platform_python_implementation != 'PyPy' and sys_platform != 'cygwin' and sys_platform != 'win32'
     # via uvicorn
 watchfiles==1.2.0

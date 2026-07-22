@@ -13,7 +13,7 @@ ok()   { printf "  \033[32mok\033[0m %s\n" "$*"; }
 warn() { printf "  \033[33m!!\033[0m %s\n" "$*"; }
 err()  { printf "  \033[31mERR\033[0m %s\n" "$*"; }
 
-bold "Monk Technologies — AgentCore IAM preflight"
+bold "Resonance Technologies — AgentCore IAM preflight"
 echo
 
 if ! command -v aws >/dev/null 2>&1; then
@@ -90,14 +90,14 @@ echo "Option A — AWS Console (admin signs in):"
 echo "  1. IAM → Users → $USER_NAME → Permissions"
 echo "  2. Add permissions → Create inline policy → JSON"
 echo "  3. Paste contents of: deploy/iam_agentcore_deploy_policy.json"
-echo "  4. Name: MonkAgentCoreDeploy → Create policy"
+echo "  4. Name: RTTAAgentCoreDeploy → Create policy"
 echo
 echo "  Console: https://console.aws.amazon.com/iam/home#/users/$USER_NAME"
 echo
 echo "Option B — AWS CLI (admin credentials, not $USER_NAME):"
 echo "  aws iam put-user-policy \\"
 echo "    --user-name $USER_NAME \\"
-echo "    --policy-name MonkAgentCoreDeploy \\"
+echo "    --policy-name RTTAAgentCoreDeploy \\"
 echo "    --policy-document file://$POLICY_FILE"
 echo
 echo "Option C — Admin creates service-linked roles once (if deploy fails on CreateAgentRuntime):"

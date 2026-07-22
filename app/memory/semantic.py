@@ -16,13 +16,13 @@ def get_store() -> BaseStore:
     if _store is not None:
         return _store
 
-    backend = os.getenv("MONK_MEMORY", "memory").strip().lower()
+    backend = os.getenv("RTTA_MEMORY", "memory").strip().lower()
     if backend == "postgres":
         from langgraph.store.postgres import PostgresStore
 
         dsn = os.getenv(
             "POSTGRES_DSN",
-            "postgresql://postgres:postgres@localhost:5433/monk",
+            "postgresql://postgres:postgres@localhost:5433/resonance",
         )
         store = PostgresStore.from_conn_string(dsn)
         store.setup()

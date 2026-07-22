@@ -22,14 +22,14 @@ if [[ -f "$ROOT/.env" ]]; then
     # shellcheck disable=SC1091
     source "$ROOT/.env"
     set +a
-elif [[ -f "$ROOT/../starter-repo/.env" ]]; then
+elif [[ -f "$ROOT/../RAIRA-AI-Research-Assistant/.env" ]]; then
     set -a
     # shellcheck disable=SC1091
-    source "$ROOT/../starter-repo/.env"
+    source "$ROOT/../RAIRA-AI-Research-Assistant/.env"
     set +a
 fi
 
-NAME="${AGENT_NAME:-monk_ticket_triage}"
+NAME="${AGENT_NAME:-rtta_ticket_triage}"
 ENTRYPOINT="${ENTRYPOINT:-agentcore_entrypoint.py}"
 REGION="${AWS_REGION:-us-east-1}"
 DEPLOYMENT_TYPE="${DEPLOYMENT_TYPE:-direct_code_deploy}"
@@ -64,8 +64,8 @@ agentcore_cmd configure "${configure_args[@]}"
 
 deploy_args=(--agent "$NAME" --local)
 [[ -n "${POSTGRES_DSN:-}" ]] && deploy_args+=(--env "POSTGRES_DSN=$POSTGRES_DSN")
-[[ -n "${MONK_MODEL:-}" ]] && deploy_args+=(--env "MONK_MODEL=$MONK_MODEL")
-[[ -n "${MONK_EMBEDDINGS:-}" ]] && deploy_args+=(--env "MONK_EMBEDDINGS=$MONK_EMBEDDINGS")
+[[ -n "${RTTA_MODEL:-}" ]] && deploy_args+=(--env "RTTA_MODEL=$RTTA_MODEL")
+[[ -n "${RTTA_EMBEDDINGS:-}" ]] && deploy_args+=(--env "RTTA_EMBEDDINGS=$RTTA_EMBEDDINGS")
 [[ -n "${AWS_REGION:-}" ]] && deploy_args+=(--env "AWS_REGION=$AWS_REGION")
 
 echo "Starting local runtime..."

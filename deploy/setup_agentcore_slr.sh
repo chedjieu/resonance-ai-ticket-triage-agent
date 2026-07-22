@@ -27,7 +27,7 @@ if [[ "$CALLER" == *":user/resonanceUser" ]]; then
     echo
     echo "Or in IAM Console as admin:"
     echo "  1. Attach BedrockAgentCoreFullAccess to resonanceUser"
-    echo "  2. OR replace MonkAgentCoreDeploy JSON with deploy/iam_agentcore_deploy_policy.json"
+    echo "  2. OR replace RTTAAgentCoreDeploy JSON with deploy/iam_agentcore_deploy_policy.json"
     echo "  3. Then as admin run the create-service-linked-role commands below"
     exit 1
 fi

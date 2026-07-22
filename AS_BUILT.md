@@ -2,10 +2,10 @@
 
 ## Project title
 
-**Monk Ticket Triage Agent (LangGraph Supervisor + HITL)**
+**Resonance Ticket Triage Agent (LangGraph Supervisor + HITL)**
 
-Package: `monk-ticket-triage` v0.1.0 — Monk Technologies Agentic AI Bootcamp **Project 2**.  
-Sibling Project 1 (Research Assistant) lives in `../starter-repo/` and shares `.env` by default.
+Package: `RTTA-AI-Multi-Agent-Ticket-Triage` v0.1.0 — Resonance Technologies Agentic AI Lab **Project 2**.  
+Sibling Project 1 (Research Assistant) lives in `../RAIRA-AI-Research-Assistant/` and shares `.env` by default.
 
 ---
 
@@ -29,13 +29,13 @@ UI: FastAPI approval console at `http://127.0.0.1:8002`.
 |------|---------------------|
 | Orchestration | LangGraph **supervisor loop** — workers never route to each other |
 | Workers | `triager` → `investigator` → `responder` → `hitl` → `send` |
-| Chat model (default) | `bedrock_converse:openai.gpt-oss-120b-1:0` via `MONK_MODEL` |
+| Chat model (default) | `bedrock_converse:openai.gpt-oss-120b-1:0` via `RTTA_MODEL` |
 | Vertex swap | `google_vertexai:gemini-2.5-pro` (+ `GCP_PROJECT` / `GCP_LOCATION`) |
-| Offline / throttle | `MONK_MODEL=fake`; auto fake fallback on Bedrock quota (configurable) |
+| Offline / throttle | `RTTA_MODEL=fake`; auto fake fallback on Bedrock quota (configurable) |
 | Embeddings | `bedrock:amazon.titan-embed-text-v2:0` (or fake hashed vectors) |
 | Local checkpointer | `SqliteSaver` → `checkpoints.sqlite` |
 | AgentCore checkpointer | `PostgresSaver` via `POSTGRES_DSN` |
-| Semantic memory | LangGraph Store (`MONK_MEMORY=memory` or `postgres`) |
+| Semantic memory | LangGraph Store (`RTTA_MEMORY=memory` or `postgres`) |
 | Episodic memory | pgvector `past_resolutions` + `data/{domain}/historical_tickets.jsonl` fallback |
 | Procedural memory | Versioned prompts in `data/prompts/responder_{domain}.json` (`latest`) |
 | HITL | `langgraph.types.interrupt` inside `hitl_node` only |
@@ -44,7 +44,7 @@ UI: FastAPI approval console at `http://127.0.0.1:8002`.
 | Outbound send | Mock append to `data/sent_responses.log` |
 | P1 Slack | `notify_slack("#incidents", blocks)` after approved P1 send |
 | Input guardrail | Hard-block injection patterns in `app/guardrails.py` (+ optional Bedrock Guardrail) |
-| Runbooks | `MONK_RUNBOOKS=auto` → Bedrock KB if `BEDROCK_KB_ID` set, else files |
+| Runbooks | `RTTA_RUNBOOKS=auto` → Bedrock KB if `BEDROCK_KB_ID` set, else files |
 | Deploy | Bedrock AgentCore **and** Vertex AI Agent Engine |
 | AgentCore managed memory | Disabled by default (`DISABLE_AGENTCORE_MEMORY=1`) |
 | Evals | LangSmith experiments; security pass bar **≥ 95%** (19/20) |
@@ -128,7 +128,7 @@ flowchart TD
 ## Project layout (as built)
 
 ```
-monk-ticket-triage/
+RTTA-AI-Multi-Agent-Ticket-Triage/
 ├── app/
 │   ├── main.py                 # FastAPI approval UI (:8002)
 │   ├── graph.py                # build_graph / build_graph_with_backends
@@ -257,11 +257,11 @@ monk-ticket-triage/
 
 | Variable | Role / default |
 |----------|----------------|
-| `MONK_MODEL` | Chat model; `fake` offline |
-| `MONK_EMBEDDINGS` | Embeddings model |
-| `MONK_MEMORY` | `memory` (default) or `postgres` |
-| `MONK_RUNBOOKS` | `auto` \| `file` \| `bedrock` |
-| `POSTGRES_DSN` | `postgresql://postgres:postgres@localhost:5433/monk` |
+| `RTTA_MODEL` | Chat model; `fake` offline |
+| `RTTA_EMBEDDINGS` | Embeddings model |
+| `RTTA_MEMORY` | `memory` (default) or `postgres` |
+| `RTTA_RUNBOOKS` | `auto` \| `file` \| `bedrock` |
+| `POSTGRES_DSN` | `postgresql://postgres:postgres@localhost:5433/resonance` |
 | `HOST` / `PORT` | `127.0.0.1` / **`8002`** |
 | `BEDROCK_GUARDRAIL_ID` / `BEDROCK_GUARDRAIL_VERSION` | Optional; `DRAFT` |
 | `BEDROCK_KB_ID` | Optional Knowledge Base for runbooks |
@@ -271,18 +271,18 @@ monk-ticket-triage/
 | `ALERT_EMAIL` | Billing alerts script |
 | `SECURITY_EVAL_MODEL` | Optional model override for injection eval |
 
-`.env` resolution: `monk-ticket-triage/.env` if present, else `../starter-repo/.env` (`override=True`).
+`.env` resolution: `RTTA-AI-Multi-Agent-Ticket-Triage/.env` if present, else `../RAIRA-AI-Research-Assistant/.env` (`override=True`).
 
 ---
 
 ## How to run (local)
 
 ```bash
-cd monk-ticket-triage
+cd RTTA-AI-Multi-Agent-Ticket-Triage
 uv sync
 
 # Optional: shared Postgres for Store / episodic
-# docker compose up -d postgres   # from starter-repo
+# docker compose up -d postgres   # from RAIRA-AI-Research-Assistant
 
 uv run python -m app.graph          # CLI sample ticket
 uv run python -m app.main           # UI http://127.0.0.1:8002
@@ -290,7 +290,7 @@ uv run python -m app.main           # UI http://127.0.0.1:8002
 curl -X POST http://127.0.0.1:8002/ingest/demo
 
 # Evals / security / ops
-$env:MONK_MODEL='fake'   # PowerShell offline
+$env:RTTA_MODEL='fake'   # PowerShell offline
 uv run python evals/run_all.py
 uv run python security/injection_eval.py
 uv run streamlit run app/ops/dashboard.py
@@ -342,7 +342,7 @@ ALERT_EMAIL=you@example.com bash scripts/setup_billing_alerts.sh
 
 ### Offline resilience
 
-- [ ] With `MONK_MODEL=fake` (or throttle fallback), demo + evals still complete  
+- [ ] With `RTTA_MODEL=fake` (or throttle fallback), demo + evals still complete  
 
 ---
 
@@ -388,10 +388,10 @@ Datasets: `evals/golden.jsonl`, `investigator_golden.jsonl`, `responder_golden.j
 | Doc | Path |
 |-----|------|
 | Day prompts (parent) | `../project2-prompts.md` |
-| Cursor rules | `../starter-repo/.cursor/rules/project2-ticket-triage.mdc` |
-| Shared `.env` | `../starter-repo/.env` |
-| Project 1 as-built | `../starter-repo/AS_BUILT.md` |
+| Cursor rules | `../RAIRA-AI-Research-Assistant/.cursor/rules/project2-ticket-triage.mdc` |
+| Shared `.env` | `../RAIRA-AI-Research-Assistant/.env` |
+| Project 1 as-built | `../RAIRA-AI-Research-Assistant/AS_BUILT.md` |
 
 ---
 
-*Document type: as-built planning record for Project 2 in `monk-ticket-triage`. Update when graph topology, memory wiring, or deploy entrypoints change.*
+*Document type: as-built planning record for Project 2 in `RTTA-AI-Multi-Agent-Ticket-Triage`. Update when graph topology, memory wiring, or deploy entrypoints change.*

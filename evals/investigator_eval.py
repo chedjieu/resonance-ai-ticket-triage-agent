@@ -23,7 +23,7 @@ from app.llm import get_chat_model
 from evals._common import EVALS_DIR, empty_ticket_state, eval_data, load_jsonl, should_upload
 
 GOLDEN_PATH = EVALS_DIR / "investigator_golden.jsonl"
-DATASET_NAME = "monk-ticket-investigator-golden"
+DATASET_NAME = "rtta-ticket-investigator-golden"
 EXPERIMENT = "investigator-eval"
 PASS_THRESHOLD = 0.5
 JUDGE_PROMPT = (
@@ -85,7 +85,7 @@ def _fake_judge(findings: list[dict], keywords: list[str]) -> tuple[float, str]:
 
 
 def llm_judge_score(ticket: dict, classification: dict, findings: list[dict], keywords: list[str]) -> tuple[float, str]:
-    if is_fake_chat_model(os.getenv("MONK_MODEL", "")):
+    if is_fake_chat_model(os.getenv("RTTA_MODEL", "")):
         return _fake_judge(findings, keywords)
     prompt = JUDGE_PROMPT.format(
         ticket=json.dumps(ticket, ensure_ascii=False),

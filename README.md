@@ -1,6 +1,6 @@
-# Monk Ticket Triage Agent (LangGraph Supervisor + HITL)
+# Resonance Ticket Triage Agent (LangGraph Supervisor + HITL)
 
-**Multi-agent support ticket triage system** for the Monk Technologies Agentic AI Bootcamp (Project 2).
+**Multi-agent support ticket triage system** for The Resonance Technologies Agentic AI (Project 2).
 
 Incoming tickets are classified, investigated with domain tools, drafted into a customer reply (using three memory layers), paused for **human-in-the-loop** approval, then sent (mock outbound). P1 incidents also notify Slack (`#incidents`).
 
@@ -12,7 +12,7 @@ Incoming tickets are classified, investigated with domain tools, drafted into a 
 - **Deploy:** Bedrock AgentCore **and** Vertex AI Agent Engine  
 - **Quality / safety:** LangSmith evals + 20-attack injection suite (pass ≥ 95%)
 
-Sibling Project 1 (research assistant) lives in [`../starter-repo/`](../starter-repo/) and typically shares `.env`.  
+Sibling Project 1 (research assistant) lives in [`../RAIRA-AI-Research-Assistant/`](../RAIRA-AI-Research-Assistant/) and typically shares `.env`.  
 Full as-built planning record: [`AS_BUILT.md`](AS_BUILT.md).
 
 ---
@@ -54,7 +54,7 @@ See [`AS_BUILT.md`](AS_BUILT.md) for locked decisions, memory details, and verif
 ## Prerequisites
 
 - **Python** 3.11 or 3.12 (`uv` recommended)
-- Shared **`.env`** from `../starter-repo/.env` (or a local `.env`)
+- Shared **`.env`** from `../RAIRA-AI-Research-Assistant/.env` (or a local `.env`)
 - Optional: Docker Postgres on `:5433` for Store / episodic pgvector
 - Cloud creds as needed: AWS (Bedrock / AgentCore), GCP (Vertex / Agent Engine)
 - Optional: `LANGSMITH_API_KEY`, `SLACK_BOT_TOKEN`, `BEDROCK_KB_ID`, `BEDROCK_GUARDRAIL_ID`
@@ -66,15 +66,15 @@ See [`AS_BUILT.md`](AS_BUILT.md) for locked decisions, memory details, and verif
 ### 1. Environment
 
 ```bash
-cd monk-ticket-triage
+cd RTTA-AI-Multi-Agent-Ticket-Triage
 uv sync
-# Env loads from ./ .env or ../starter-repo/.env (override=True)
+# Env loads from ./ .env or ../RAIRA-AI-Research-Assistant/.env (override=True)
 ```
 
 Offline dry-run:
 
 ```powershell
-$env:MONK_MODEL='fake'
+$env:RTTA_MODEL='fake'
 ```
 
 ### 2. CLI sample ticket
@@ -127,7 +127,7 @@ uv run python -m app.cron.refine_responder_prompt --domain support
 
 ```bash
 bash deploy/deploy_agentcore.sh
-# AGENT_NAME default: monk_ticket_triage
+# AGENT_NAME default: rtta_ticket_triage
 
 bash deploy/deploy_vertex_engine.sh
 # Writes VERTEX_ENGINE_RESOURCE_NAME to .env.deployed
@@ -170,7 +170,7 @@ Injection attacks: `security/attacks.jsonl` (e.g. `jailbreak_dan` → blocked; `
 ## Project layout
 
 ```
-monk-ticket-triage/
+RTTA-AI-Multi-Agent-Ticket-Triage/
 ├── app/
 │   ├── main.py                 # FastAPI approval UI (:8002)
 │   ├── graph.py                # build_graph / build_graph_with_backends
@@ -204,10 +204,10 @@ monk-ticket-triage/
 
 | Variable | Role |
 |----------|------|
-| `MONK_MODEL` | Chat model (Bedrock default, Vertex, or `fake`) |
-| `MONK_EMBEDDINGS` | Embeddings |
-| `MONK_MEMORY` | `memory` (default) or `postgres` |
-| `MONK_RUNBOOKS` | `auto` \| `file` \| `bedrock` |
+| `RTTA_MODEL` | Chat model (Bedrock default, Vertex, or `fake`) |
+| `RTTA_EMBEDDINGS` | Embeddings |
+| `RTTA_MEMORY` | `memory` (default) or `postgres` |
+| `RTTA_RUNBOOKS` | `auto` \| `file` \| `bedrock` |
 | `POSTGRES_DSN` | Store / episodic / AgentCore checkpointer |
 | `HOST` / `PORT` | Default `127.0.0.1:8002` |
 | `BEDROCK_GUARDRAIL_ID` | Optional Bedrock Guardrail |
@@ -241,6 +241,6 @@ Real Zendesk/ServiceNow/PagerDuty connectors, live log/metrics APIs, production 
 |----------|----------|
 | As-built planning | [`AS_BUILT.md`](AS_BUILT.md) |
 | Day prompts | [`../project2-prompts.md`](../project2-prompts.md) |
-| Cursor rules | [`../starter-repo/.cursor/rules/project2-ticket-triage.mdc`](../starter-repo/.cursor/rules/project2-ticket-triage.mdc) |
-| Shared env | [`../starter-repo/.env`](../starter-repo/.env) |
-| Project 1 (Research Assistant) | [`../starter-repo/`](../starter-repo/) |
+| Cursor rules | [`../RAIRA-AI-Research-Assistant/.cursor/rules/project2-ticket-triage.mdc`](../RAIRA-AI-Research-Assistant/.cursor/rules/project2-ticket-triage.mdc) |
+| Shared env | [`../RAIRA-AI-Research-Assistant/.env`](../RAIRA-AI-Research-Assistant/.env) |
+| Project 1 (Research Assistant) | [`../RAIRA-AI-Research-Assistant/`](../RAIRA-AI-Research-Assistant/) |

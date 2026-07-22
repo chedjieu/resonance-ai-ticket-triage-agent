@@ -9,7 +9,7 @@ from pathlib import Path
 PROMPTS_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "prompts"
 
 DEFAULT_PROMPT = (
-    "You are a support responder for Monk Technologies. Write a clear, empathetic "
+    "You are a support responder for Resonance Technologies. Write a clear, empathetic "
     "reply to the customer. Cite findings when relevant. Never invent refunds, credits, "
     "SLAs, or timelines. Prefer concrete next steps. Escalate when unsure or when the "
     "issue involves payment, legal risk, or PII handling."

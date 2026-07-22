@@ -107,8 +107,8 @@ def _status_badge(status: str) -> str:
 
 
 def main() -> None:
-    st.set_page_config(page_title="Monk Ticket Ops", layout="wide")
-    st.title("Monk Ticket Triage — Ops Dashboard")
+    st.set_page_config(page_title="RTTA Ticket Ops", layout="wide")
+    st.title("Resonance Ticket Triage — Ops Dashboard")
     st.caption("Read-only metrics from HITL outcomes (and sent log when present).")
 
     df = _normalize_hitl(_load_jsonl(HITL_LOG))
